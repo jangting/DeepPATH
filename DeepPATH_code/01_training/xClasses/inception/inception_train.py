@@ -42,6 +42,9 @@ tf.app.flags.DEFINE_integer('max_steps', 500000,
 tf.app.flags.DEFINE_string('subset', 'train',
                            """Either 'train' or 'validation'.""")
 
+tf.app.flags.DEFINE_string('model', 'inception-v3',
+                           """train model""")
+
 # Flags governing the hardware employed for running TensorFlow.
 tf.app.flags.DEFINE_integer('num_gpus', 1,
                             """How many GPUs to use.""")

@@ -78,13 +78,23 @@ def inference(images, num_classes, for_training=False, restore_logits=True,
                         stddev=0.1,
                         activation=tf.nn.relu,
                         batch_norm_params=batch_norm_params):
-      logits, endpoints = slim.inception.inception_v3(
-          images,
-          dropout_keep_prob=0.8,
-          num_classes=num_classes,
-          is_training=for_training,
-          restore_logits=restore_logits,
-          scope=scope)
+
+      if FLAGS.model == "inception-v3":
+          logits, endpoints = slim.inception.inception_v3(
+              images,
+              dropout_keep_prob=0.8,
+              num_classes=num_classes,
+              is_training=for_training,
+              restore_logits=restore_logits,
+              scope=scope)
+      elif FLAGS.model == "inception-v4":
+          logits, endpoints = slim.inception.inception_v4(
+              images,
+              dropout_keep_prob=0.8,
+              num_classes=num_classes,
+              is_training=for_training,
+              restore_logits=restore_logits,
+              scope=scope)
 
   # Add summaries for viewing model statistics on TensorBoard.
   _activation_summaries(endpoints)
