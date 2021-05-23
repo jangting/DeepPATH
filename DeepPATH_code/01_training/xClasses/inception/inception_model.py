@@ -73,6 +73,8 @@ def inference(images, num_classes, for_training=False, restore_logits=True,
       'epsilon': 0.001,
   }
   # Set weight_decay for weights in Conv and FC layers.
+  logits = None
+  endpoints = None
   with slim.arg_scope([slim.ops.conv2d, slim.ops.fc], weight_decay=0.00004):
     with slim.arg_scope([slim.ops.conv2d],
                         stddev=0.1,
@@ -93,14 +95,16 @@ def inference(images, num_classes, for_training=False, restore_logits=True,
               dropout_keep_prob=0.8,
               num_classes=num_classes,
               is_training=for_training,
-              restore_logits=restore_logits,
               scope=scope)
 
   # Add summaries for viewing model statistics on TensorBoard.
   _activation_summaries(endpoints)
 
   # Grab the logits associated with the side head. Employed during training.
-  auxiliary_logits = endpoints['aux_logits']
+  if FLAGS.model == "inception-v3":
+      auxiliary_logits = endpoints['aux_logits']
+  elif FLAGS.model == "inception-v4":
+      auxiliary_logits = endpoints['AuxLogits']
 
   return logits, auxiliary_logits
 
